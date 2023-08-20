@@ -1,41 +1,44 @@
 pipeline {
-     agent any
- 
-     environment {
-         BUILD_DIR = 'angular2' // Change this to your Angular app's build output directory
-         APACHE_ROOT = '/var/www/html' // Change this to your Apache2 server's root directory
-     }
- 
-     stages {
-         stage('Checkout') {
-             steps {
-                 checkout scm
-             }
-         }
- 
-         stage('Install Dependencies') {
-             steps {
-                 sh 'apt update'
-                 sh 'apt install apache2 -y'
-                 sh 'curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -'
-                 sh 'apt install nodejs'
-                 sh 'npm install -g @angular/cli'
-                 sh 'npm install'
-             }
-         }
- 
-         stage('Build Angular App') {
-             steps {
-                 sh 'ng build --prod'
-             }
-         }
- 
-         stage('Deploy to Apache2') {
-             steps {
-                 sh 'sudo cp -R ${BUILD_DIR}/* ${APACHE_ROOT}'
-                 sh 'sudo chown -R www-data:www-data ${APACHE_ROOT}'
-                 sh 'sudo chmod -R 755 ${APACHE_ROOT}'
-             }
-         }
-     }
- }
+    agent any
+
+    environment {
+        BUILD_DIR = 'angular2' // Change this to your Angular app's build output directory
+        APACHE_ROOT = '/var/www/html' // Change this to your Apache server's root directory
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Node.js and NPM') {
+            steps {
+                tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install -g @angular/cli'
+                sh 'npm install'
+            }
+        }
+
+        stage('Build Angular App') {
+            steps {
+                sh 'ng build --prod'
+            }
+        }
+
+        stage('Deploy to Apache2') {
+            steps {
+                sh "sudo rm -r ${APACHE_ROOT}/*" // Clear Apache root directory
+                sh "sudo cp -R ${BUILD_DIR}/* ${APACHE_ROOT}"
+                sh "sudo chown -R www-data:www-data ${APACHE_ROOT}"
+                sh "sudo chmod -R 755 ${APACHE_ROOT}"
+            }
+        }
+    }
+}
