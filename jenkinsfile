@@ -1,16 +1,41 @@
-// This shows a simple example of how to archive the build output artifacts.
-node {
-        stage('Checkout SCM'){
-                git branch: 'master', url: 'https://github.com/jeevithajack/angular2.git'
-        }
-
-        stage('Install node modules'){
-                sh "npm install"
-        }
-        stage('Build'){
-                sh "npm run build:ssr"
-        }
-        stage('Deploy'){
-                sh "pm2 restart all"
-        }
-}
+pipeline {
+     agent any
+ 
+     environment {
+         BUILD_DIR = 'angular1' // Change this to your Angular app's build output directory
+         APACHE_ROOT = '/var/www/html' // Change this to your Apache2 server's root directory
+     }
+ 
+     stages {
+         stage('Checkout') {
+             steps {
+                 checkout scm
+             }
+         }
+ 
+         stage('Install Dependencies') {
+             steps {
+                 sh 'apt update'
+                 sh 'apt install apache2 -y'
+                 sh 'curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -'
+                 sh 'apt install nodejs'
+                 sh 'npm install -g @angular/cli'
+                 sh 'npm install'
+             }
+         }
+ 
+         stage('Build Angular App') {
+             steps {
+                 sh 'ng build --prod'
+             }
+         }
+ 
+         stage('Deploy to Apache2') {
+             steps {
+                 sh 'sudo cp -R ${BUILD_DIR}/* ${APACHE_ROOT}'
+                 sh 'sudo chown -R www-data:www-data ${APACHE_ROOT}'
+                 sh 'sudo chmod -R 755 ${APACHE_ROOT}'
+             }
+         }
+     }
+ }
