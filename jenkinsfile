@@ -2,7 +2,7 @@ pipeline {
      agent any
  
      environment {
-         BUILD_DIR = 'angular1' // Change this to your Angular app's build output directory
+         BUILD_DIR = 'angular2' // Change this to your Angular app's build output directory
          APACHE_ROOT = '/var/www/html' // Change this to your Apache2 server's root directory
      }
  
