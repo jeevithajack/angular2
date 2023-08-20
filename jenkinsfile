@@ -13,12 +13,6 @@ pipeline {
             }
         }
 
-        stage('Install Node.js and NPM') {
-            steps {
-                tool name: 'NodeJS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install -g @angular/cli'
