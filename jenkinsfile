@@ -26,7 +26,7 @@
 	 
 		 stage('Build Angular App') {
 		     steps {
-		         sh 'ng build --configuration '
+		         sh 'ng build --configuration'
 		     }
 		 }
 	 
