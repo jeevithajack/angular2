@@ -20,8 +20,6 @@
 		         sh '''
 		               cd ${BUILD_DIR}
 		               npm install
-					   nodejs install
-					   npm install -g @angular/cli
 		            '''
 		     }
 		 }
