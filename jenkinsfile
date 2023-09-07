@@ -15,19 +15,6 @@
 		     }
 		 }
 	 
-		 stage('Install Dependencies') {
-             steps {
-                 script {
-                     def nodejsHome = tool name: 'NodeJS LTS', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                     env.PATH = "${nodejsHome}/bin:${env.PATH}"
-                     sh '''
-                         cd ${BUILD_DIR}
-                         npm install
-                     '''
-                 }
-             }
-         }
-	
 		 stage('Build Angular App') {
 		     steps {
 		         sh 'ng build --prod'
