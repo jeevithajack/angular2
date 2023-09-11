@@ -1,4 +1,4 @@
-	pipeline {
+pipeline {
 	     agent any
 	 
 	     environment {
@@ -14,19 +14,5 @@
 		         checkout scm
 		     }
 		 }
-	 
-		 stage('Build Angular App') {
-		     steps {
-		         sh 'ng build --prod'
-		     }
-		 }
-	 
-		 stage('Deploy to Apache2') {
-		     steps {
-		         sh 'sudo cp -R ${BUILD_DIR}/* ${APACHE_ROOT}'
-		         sh 'sudo chown -R www-data:www-data ${APACHE_ROOT}'
-		         sh 'sudo chmod -R 755 ${APACHE_ROOT}'
-		     }
-		 }
-	     }
-	 }
+         }
+}
