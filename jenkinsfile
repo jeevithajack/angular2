@@ -17,7 +17,7 @@
 	 
 		 stage('Build Angular App') {
 		     steps {
-		         sh ' build --prod'
+		         sh "cd ${angular} && ./build.sh"
 		     }
 		 }
          }
