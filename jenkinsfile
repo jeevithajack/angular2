@@ -17,7 +17,7 @@
 	 
 		 stage('Build Angular App') {
 		     steps {
-		         sh "cd ${angular} && ./build.sh"
+		         sh "/var/lib/jenkins/workspace/angular@tmp/durable-5061b22a/script.sh "
 		     }
 		 }
          }
