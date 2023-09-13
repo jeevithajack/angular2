@@ -14,5 +14,11 @@
 		         checkout scm
 		     }
 		 }
+	 
+		 stage('Build Angular App') {
+		     steps {
+		         sh 'ng build --prod'
+		     }
+		 }
          }
     }
