@@ -17,8 +17,16 @@
 	 
 		 stage('Build Angular App') {
 		     steps {
-		         sh "/var/lib/jenkins/workspace/angular@tmp/durable-5061b22a/script.sh "
+		         sh 'ng build --prod'
 		     }
 		 }
-         }
-    }
+	 
+		 stage('Deploy to Apache2') {
+		     steps {
+		         sh 'sudo cp -R ${BUILD_DIR}/* ${APACHE_ROOT}'
+		         sh 'sudo chown -R www-data:www-data ${APACHE_ROOT}'
+		         sh 'sudo chmod -R 755 ${APACHE_ROOT}'
+		     }
+		 }
+	     }
+	 }
